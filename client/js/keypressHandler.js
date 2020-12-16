@@ -1,3 +1,4 @@
+// import httpHandler from './httpHandler';
 
 $('body').on('keydown', (event) => {
   var arrowPress = event.key.match(/Arrow(Up|Down|Left|Right)/);
@@ -8,3 +9,4 @@ $('body').on('keydown', (event) => {
 });
 
 console.log('Client is running in the browser!');
+//httpHandler.getRandomDirection();

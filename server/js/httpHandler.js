@@ -15,13 +15,14 @@ module.exports.initialize = (queue) => {
 module.exports.router = (req, res, next = ()=>{}) => {
   console.log('Serving request type ' + req.method + ' for url ' + req.url);
 
+  res.writeHead(200, headers);
+  console.log('headers', headers)
   if (req.method === 'GET' && req.url === '/') {
     //set the random string
     var direction = ['left', 'right', 'up', 'down'];
-    var str = direction[Math.floor(Math.random()* direction.length)];
+    var str = direction[Math.floor(Math.random() * direction.length)];
     res.write(str);
   }
-  res.writeHead(200, headers);
   res.end();
   next(); // invoke next() at the end of a request to help with testing!
 };
