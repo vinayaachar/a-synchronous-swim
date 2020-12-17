@@ -15,7 +15,7 @@
 
   setInterval(() => {
     getRandomDirection((direction) => { SwimTeam.move(direction); });
-  }, 3000);
+  }, 10000);
 
   /////////////////////////////////////////////////////////////////////
   // The ajax file uplaoder is provided for your convenience!
