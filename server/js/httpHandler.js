@@ -14,16 +14,37 @@ module.exports.initialize = (queue) => {
 
 module.exports.router = (req, res, next = ()=>{}) => {
   console.log('Serving request type ' + req.method + ' for url ' + req.url);
+  // res.writeHead(200, headers);
 
-  res.writeHead(200, headers);
-  if (req.method === 'GET' && req.url === '/') {
-    //set the random string
-    // var direction = ['left', 'right', 'up', 'down'];
-    // var str = direction[Math.floor(Math.random() * direction.length)];
-    var firstMessage = messageQueue.dequeue();
-    console.log('first message', firstMessage);
-    res.write(firstMessage);
+  if (req.method === 'OPTIONS') {
+    res.writeHead(200, headers);
+    res.end()
+    next()
   }
-  res.end();
-  next(); // invoke next() at the end of a request to help with testing!
+
+  if (req.method === 'GET') {
+    console.log('URL:', req.url)
+    if (req.url === '/background.jpg') {
+      fs.readFile(module.exports.backgroundImageFile, (err, content) => {
+        if (err) {
+          res.writeHead(404, headers);
+          res.end(err);
+          next()
+        } else {
+          res.writeHead(200, headers);
+          res.end(content);
+          next();
+        }
+      })
+    } else if (req.url === 'spec/missing.jpg') {
+      res.writeHead(404, headers);
+      res.end();
+    } else {
+      res.writeHead(200, headers);
+      var firstMessage = messageQueue === null ? 'EMPTY' : messageQueue.dequeue()
+      res.write(firstMessage);
+      res.end();
+      next();
+    }
+  }
 };

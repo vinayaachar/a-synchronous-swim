@@ -13,9 +13,28 @@
     });
   }
 
-  setInterval(() => {
-    getRandomDirection((direction) => { SwimTeam.move(direction); });
-  }, 10000);
+  //GET for background image
+  var getBackgroundImage = (callback) => {
+    $.ajax({
+      type: 'GET',
+      url: serverUrl + '/background.jpg',
+      dataType: 'image/jpg',
+      success: (data) => {
+        console.warn('yellow', data);
+        $('.pool').append(data);
+      },
+      error: (error, status, exception) => {
+        console.warn(status, exception);
+        console.error('Failed to get background image:', error);
+      }
+    });
+  }
+
+  getBackgroundImage();
+
+  // setInterval(() => {
+  //   getRandomDirection((direction) => { SwimTeam.move(direction); });
+  // }, 10000);
 
   /////////////////////////////////////////////////////////////////////
   // The ajax file uplaoder is provided for your convenience!

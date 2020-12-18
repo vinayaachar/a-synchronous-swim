@@ -11,4 +11,5 @@
   "javascript.updateImportsOnFileMove.enabled": "never",
   "javascript.validate.enable": false,
   "extensions.ignoreRecommendations": true
+  "extensions.ignoreRecommendations": true
 }
