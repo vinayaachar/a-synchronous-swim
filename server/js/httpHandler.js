@@ -19,7 +19,7 @@ module.exports.router = (req, res, next = ()=>{}) => {
   if (req.method === 'OPTIONS') {
     res.writeHead(200, headers);
     res.end()
-    next()
+    next();
   }
 
   if (req.method === 'GET') {
@@ -39,6 +39,7 @@ module.exports.router = (req, res, next = ()=>{}) => {
     } else if (req.url === 'spec/missing.jpg') {
       res.writeHead(404, headers);
       res.end();
+      next();
     } else {
       res.writeHead(200, headers);
       var firstMessage = messageQueue === null ? 'EMPTY' : messageQueue.dequeue()
@@ -46,5 +47,20 @@ module.exports.router = (req, res, next = ()=>{}) => {
       res.end();
       next();
     }
+  }
+
+  if (req.method === 'POST') {
+    var fileData = Buffer.alloc(0);
+
+    req.on('data', (chunk) => fileData = Buffer.concat([fileData, chunk]));
+
+    req.on('end', () => {
+      var parsed = multipart.getFile(fileData);
+      fs.writeFile(module.exports.backgroundImageFile, parsed.data, (err) => {
+        res.writeHead(err ? 400 : 201, headers);
+        res.end();
+        next();
+      });
+    });
   }
 };
